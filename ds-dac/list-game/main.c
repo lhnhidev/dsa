@@ -115,9 +115,9 @@ void printList(List list) {
 
 //swap list
 void swapList(int p1, int p2, List *list) {
-	int tmp = list->item[p1];
-	list->item[p1] = list->item[p2];
-	list->item[p2] = tmp;
+	int tmp = list->item[p1-1];
+	list->item[p1-1] = list->item[p2-1];
+	list->item[p2-1] = tmp;
 }
 
 //sort list
@@ -125,7 +125,7 @@ void sortList(List *list) {
 	for (int i = 0; i < list->last; i++) {
 		for (int j = i + 1; j < list->last; j++) {
 			if (list->item[i] > list->item[j]) {
-				swapList(i, j, list);
+				swapList(i + 1, j + 1, list);
 			}
 		}
 	}
@@ -169,11 +169,13 @@ int main() {
 			printf("/ - Click 6: Get last position                    /\n");
 			printf("/ - Click 7: Find next position                   /\n");
 			printf("/ - Click 8: Find previous position               /\n");
+			printf("/ - Click 9: Swap value                           /\n");
+			printf("/ - Click 10: Sort your array                     /\n");
 		while (1) {
 			int order;
 			printf("\nYour order is: ");
 			scanf("%d", &order);
-			while (order < 0 || order > 8) {
+			while (order < 0 || order > 10) {
 				printf("Not found order! Please try again!\n");
 				printf("\nYour order is: ");
 				scanf("%d", &order);
@@ -230,6 +232,23 @@ int main() {
 					printf("Your position which you want to get previous position: ");
 					scanf("%d", &p);
 					printf("The previous position is: %d", previousList(p, list));
+					printf("\n");
+					break;
+				case 9:
+					printf("Your first position: ");
+					int p1, p2;
+					scanf("%d", &p1);
+					printf("Your second position: ");
+					scanf("%d", &p2);
+					swapList(p1, p2, &list);
+					printf("New list is: ");
+					printList(list);
+					printf("\n");
+					break;
+				case 10:
+					sortList(&list);
+					printf("New list is: ");
+					printList(list);
 					printf("\n");
 					break;
 			}
