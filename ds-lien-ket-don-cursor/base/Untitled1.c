@@ -42,7 +42,7 @@ Node *lastNode(Node *header) {
 	return currentNode;
 }
 
-// chen vao dau 1 gia tri
+// chen vao cuoi list 1 gia tri
 void appendList(itemType x, Node **header) {
 	Node *tmp = *header;
 	Node *newNode = makeNode(x);
@@ -52,7 +52,7 @@ void appendList(itemType x, Node **header) {
 	tmp->next = newNode;
 }
 
-// chen vao cuoi 1 gia tri
+// chen vao dau list 1 gia tri
 void prependList(itemType x, Node **header) {
 	Node *newNode = makeNode(x);
 	newNode->next = (*header)->next;
