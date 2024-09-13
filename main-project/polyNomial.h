@@ -4,13 +4,13 @@
 
 /* - - - - - - - - - - - - - - NOTE - - - - - - - - - - - - - - 
 *	
-*	1. Poly: viet tat cua Polynomial co nghia la da thuc
+*	1. Poly: viet tat cua Polynomial co nghia la Da thuc
 *	
-*	2. Mono: viet tat cua Monomial co nghia la don thuc
+*	2. Mono: viet tat cua Monomial co nghia la Don thuc
 *
-*	3. Coe: viet tat cua Coefficient co nghia la he so
+*	3. Coe: viet tat cua Coefficient co nghia la He so
 *
-*	4. Exp: viet tat cua Exponent co nghia la so mu
+*	4. Exp: viet tat cua Exponent co nghia la So mu
 *
 *	5. Co the hieu Node la mot Don thuc va nguoc lai
 *
@@ -119,18 +119,35 @@ void readPoly(List *header) {
 	for (int i = 0; i < n; i++) {
 		ElementType x; 
 		scanf("%d %d", &x.Heso, &x.Somu);
-		appendPoly(x, header);
+		if (x.Heso != 0) appendPoly(x, header);
 	}
 }
 
 // In ra mot da thuc
 void printPoly(List header) {
 	Position currentNode = header;
+	
+	// Neu Da thuc rong thi khong lam gi ca
+	if (currentNode->Next == NULL) return;
+	
+	// Kiem tra neu phan tu dau duong thi khong can in ra dau +
+	if (currentNode->GetCoe > 0) {
+		if (currentNode->GetCoe == 1) {
+			printf("x^%d ", currentNode->GetExp);
+		}
+		else {
+			printf("%dx^%d ", currentNode->GetCoe, currentNode->GetExp);
+		}
+		currentNode = currentNode->Next;
+	}
 	while (currentNode->Next != NULL) {
 		if (currentNode->GetCoe < 0) {
 			printf("- %dx^%d ", -currentNode->GetCoe, currentNode->GetExp);
 		}
-		else {
+		else if (currentNode->GetCoe == 1) {
+			printf("+ x^%d ", currentNode->GetExp);
+		}
+		else if (currentNode->GetCoe != 0) {
 			printf("+ %dx^%d ", currentNode->GetCoe, currentNode->GetExp);
 		}
 		currentNode = currentNode->Next;
@@ -223,12 +240,13 @@ void normalizePoly(List *header) {
 		while (nodeJ->Next != NULL) {
 			if (nodeJ->GetExp == nodeI->GetExp) {
 				nodeI->GetCoe += nodeJ->GetCoe;
-				nodeJ->Next = nodeJ->Next->Next;
+				nodeJ->Next = nodeJ->Next->Next; // Xoa di nodeJ sau khi da cong don vao nodeI
 			}
 			else {
 				nodeJ = nodeJ->Next;
 			}
 		}
+		
 		nodeI= nodeI->Next;
 	}
 }
@@ -253,5 +271,139 @@ List subPoly(List header1, List header2) {
 	}
 	
 	return addPoly(header1, oppositeList);
+}
+
+// Nhan 2 Da Thuc voi nhau
+List mulPoly(List header1, List header2) {
+	List resList;
+	makeNullPoly(&resList);
+	
+	Position nodeI = header1;
+	while (nodeI->Next != NULL) {
+		Position nodeJ = header2;
+		while (nodeJ->Next != NULL) {
+			int c = nodeJ->GetCoe * nodeI->GetCoe,
+				e = nodeJ->GetExp + nodeI->GetExp;
+			ElementType x = {c, e};
+			appendPoly(x, &resList);
+			nodeJ = nodeJ->Next;
+		}
+		nodeI = nodeI->Next;
+	}
+	
+	normalizePoly(&resList);
+	return resList;
+}
+
+// Copy Da thuc y cho Da thuc x
+List copyPoly(List header) {
+	List resList;
+	makeNullPoly(&resList);
+	
+	Position currentNode = header;
+	while (currentNode->Next != NULL) {
+		appendPoly(currentNode->Next->Element, &resList);
+		currentNode = currentNode->Next;
+	}
+	
+	return resList;
+}
+
+// Lay luy thua p cua mot da thuc
+void powPoly(List *header, int p) {
+	if (p < 0) {
+		printf("Khong nhan so mu am");
+		return;	
+	}
+	else if (p == 0) {
+		(*header)->GetCoe = 1;
+		(*header)->GetExp = 0;
+		(*header)->Next = NULL;
+		return;
+	}
+	
+	List beMultyPoly = copyPoly(*header); // Tao ra Da thuc bi nhan
+	for (int i = 1; i < p; i++) {
+		*header = mulPoly(*header, beMultyPoly);
+	}
+}
+
+// Copy Da thuc dua vao he so
+List copyPolyByCoe(int order, List header) {
+	// order == 1 -> copy chan
+	// order == -1 -> copy le
+	
+	List resList;
+	makeNullPoly(&resList);
+	
+	if (order != 1 && order != -1) return resList;
+	
+	Position currentNode = header;
+	while (currentNode->Next != NULL) {
+		if (order == 1) {
+			if (currentNode->GetCoe % 2 == 0) {
+				appendPoly(currentNode->Next->Element, &resList);
+			}
+		}
+		else if (order == -1) {
+			if (currentNode->GetCoe % 2 != 0) {
+				appendPoly(currentNode->Next->Element, &resList);
+			}
+		}
+		currentNode = currentNode->Next;
+	}
+	return resList;
+}
+
+// Copy Da thuc dua vao so mu
+List copyPolyByExp(int order, List header) {
+	// order == 1 -> copy chan
+	// order == -1 -> copy le
+	
+	List resList;
+	makeNullPoly(&resList);
+	
+	if (order != 1 && order != -1) return resList;
+	
+	Position currentNode = header;
+	while (currentNode->Next != NULL) {
+		if (order == 1) {
+			if (currentNode->GetExp % 2 == 0) {
+				appendPoly(currentNode->Next->Element, &resList);
+			}
+		}
+		else if (order == -1) {
+			if (currentNode->GetExp % 2 != 0) {
+				appendPoly(currentNode->Next->Element, &resList);
+			}
+		}
+		currentNode = currentNode->Next;
+	}
+	return resList;
+}
+
+// Tim nhan tu chung
+ElementType gcdPoly(List header) {
+	#include <math.h> // Nap chong thu vien
+	int gcd(int a, int b) { // Nap chong ham
+	    while (b != 0) {
+	        int tmp = b;
+	        b = a % b;
+	        a = tmp;
+	    }
+    	return a;
+	}
+	
+	Position currentNode = header;
+	int c = header->GetCoe;
+	int e = header->GetExp;
+	while (currentNode->Next != NULL) {
+		c = gcd(currentNode->GetCoe, c);
+		e = (int)fmin(e, currentNode->GetExp);
+		if (c == 1) break;
+		currentNode = currentNode->Next;
+	}
+	ElementType x = {c, e};
+	return x;
 }
 
