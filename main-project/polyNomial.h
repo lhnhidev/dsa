@@ -16,7 +16,7 @@
 *
 *	AUTHOR: Le Hoang Nhi
 *	CodeName: lhnhidev
-*	Github: https://github.com/lhnhidev
+*	My Github: https://github.com/lhnhidev
 *	Email: lhnhi420@gmail.com
 *		   nhib2303837@student.ctu.edu.vn
 *	
