@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-/* - - - - - - - - - - - - - - NOTE - - - - - - - - - - - - - - 
+/* - - - - - - - - - - - - - - READ ME - - - - - - - - - - - - - - 
 *	
 *	1. Poly: viet tat cua Polynomial co nghia la Da thuc
 *	
@@ -14,7 +14,15 @@
 *
 *	5. Co the hieu Node la mot Don thuc va nguoc lai
 *
-*  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*	AUTHOR: Le Hoang Nhi
+*	CodeName: lhnhidev
+*	Github: https://github.com/lhnhidev
+*	Email: lhnhi420@gmail.com
+*		   nhib2303837@student.ctu.edu.vn
+*	
+*	@_NOCOPYRIGHT
+*
+*  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 */ 
 
 typedef struct ElementType {
