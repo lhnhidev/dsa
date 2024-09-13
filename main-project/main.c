@@ -42,10 +42,11 @@ void renderMenu() {
 	printf("\t- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");
 	printf("\t18. Tao Da thuc moi co so mu chan hoac le\n");
 	printf("\t19. In ra nhan tu chung cua Da thuc\n");
+	printf("\t20. Reset man hinh\n");
 }
 
 int main() {
-	printf("- - - - - - - - - - - - Polynomial Game - - - - - - - - - - - - \n\n");
+	printf(YELLOW "- - - - - - - - - - - -- - - - - - - - Polynomial Game - - - - - - - - - - - - - - - - - - - - \n\n" WHITE);
 	
 	printf(RED "Nhap vao Da thuc cua ban!\n" WHITE);
 	
@@ -242,6 +243,10 @@ int main() {
 			case 19:
 				x = gcdPoly(header);
 				printf(GREEN "\tNhan tu chung la: %dx^%d\n" WHITE, x.Heso, x.Somu);
+				break;
+			case 20:
+				system("cls");
+				renderMenu();
 				break;
 		}
 	}
