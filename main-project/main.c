@@ -1,61 +1,54 @@
 #include <stdio.h>
 
-#define mx 100
-
 typedef int ElementType;
 
-typedef struct Stack {
+#define mx 100
+
+typedef struct Queue {
 	ElementType Element[mx];
-	int Top;
-} Stack;
+	int Front;
+	int Rear;
+} Queue;
 
-void makeNullStack(Stack *st) {
-	st->Top = mx;
+void makeNullQueue(Queue *q) {
+	q->Front = -1;
+	q->Rear = -1;
 }
 
-int fullStack(Stack st) {
-	return st.Top == 0;
+int fullQueue(Queue q) {
+	return q.Rear - q.Front + 1 == mx;
 }
 
-int emptyStack(Stack st) {
-	return st.Top == mx;
+int emptyQueue(Queue q) {
+	return q.Rear == -1;
 }
 
-void pushStack(ElementType x, Stack *st) {
-	if (fullStack(*st)) return;
-	st->Top--;
-	st->Element[st->Top] = x;
+void enQueue(ElementType x, Queue *q) {
+	if (fullQueue(*q)) return;
+	q->Rear++;
+	q->Element[q->Rear] = x;
 }
 
-void readStack(Stack *st) {
+void readQueue(Queue *q) {
 	int n; scanf("%d", &n);
 	for (int i = 0; i < n; i++) {
-		int x; scanf("%d", &x);
-		pushStack(x, st);
+		ElementType x; scanf("%d", &x);
+		enQueue(x, q);
 	}
 }
 
-ElementType topStack(Stack st) {
-	return st.Element[st.Top];
-}
-
-void popStack(Stack *st) {
-	if (emptyStack(*st)) return;
-	st->Top++;
-}
-
-void printStack(Stack st) {
-	for (int i = st.Top; i < mx; i++) {
-		printf("%d ", st.Element[i]);
+void printQueue(Queue q) {
+	if (emptyQueue(q)) return;
+	for (int i = q.Front; i <= q.Rear; i++) {
+		printf("%d ", q.Element[i]);
 	}
 }
 
 int main() {
-	Stack st;
-	makeNullStack(&st);
+	Queue q; 
+	makeNullQueue(&q);
 	
-	readStack(&st);
-	printStack(st);
-	
+	readQueue(&q);
+	printQueue(q);
 	return 0;
 }
