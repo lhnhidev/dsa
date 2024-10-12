@@ -113,7 +113,6 @@ int main() {
 	makeNullList(&list);
 	
 	readList(&list);
-	swapList(2, 6, &list);
 	printList(list);
 	
 	return 0;
