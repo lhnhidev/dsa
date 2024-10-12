@@ -79,6 +79,10 @@ Position locateList(int x, List header) {
 	return NULL;
 }
 
+int retrieveList(Position p, List header) {
+	return p->next->data;
+}
+
 int main() {
 	List header;
 	makeNullList(&header);
