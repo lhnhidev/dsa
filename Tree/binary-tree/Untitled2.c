@@ -121,6 +121,132 @@ void deleteNode(int x, Tree *root) {
 	}
 }
 
+Tree getPrevious(int x, Tree T) {
+    Tree predecessor = NULL;
+    while (T != NULL) {
+        if (x > T->data) {
+            predecessor = T;
+            T = T->right;
+        } else if (x < T->data) {
+            T = T->left;
+        } else {
+            if (T->left != NULL) {
+                Tree temp = T->left;
+                while (temp->right != NULL) {
+                    temp = temp->right;
+                }
+                return temp;
+            }
+            break;
+        }
+    }
+    return predecessor; 
+}
+
+
+Tree getNext(int x, Tree T) {
+    Tree successor = NULL;
+    while (T != NULL) {
+        if (x < T->Key) {
+            successor = T;
+            T = T->Left;
+        } else if (x > T->Key) {
+            T = T->Right;
+        } else {
+            if (T->Right != NULL) {
+                Tree temp = T->Right;
+                while (temp->Left != NULL) {
+                    temp = temp->Left;
+                }
+                return temp;
+            }
+            break;
+        }
+    }
+    return successor;
+}
+
+void printPath(int x, Tree T) {
+    while (T != NULL) {
+        printf("%d ", T->Key);
+        if (x < T->Key) {
+            T = T->Left;
+        } else if (x > T->Key) {
+            T = T->Right;
+        } else {
+            printf("-> Tim thay\n");
+            return;
+        }
+    }
+    printf("-> Khong thay\n");
+}
+
+int getHeight(Tree T) {
+    if (T == NULL) {
+        return -1; 
+    } else {
+        int leftHeight = getHeight(T->Left);
+        int rightHeight = getHeight(T->Right);
+        return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+    }
+}
+
+// chung 3 cái li?n hnode  
+Tree searchNode(int x, Tree T) {
+    if (T == NULL || T->Key == x) {
+        return T;
+    }
+    if (x < T->Key) {
+        return searchNode(x, T->Left);
+    } else {
+        return searchNode(x, T->Right);
+    }
+}
+
+// Hàm tính chi?u cao c?a cây hnode  
+int getHeight(Tree T) {
+    if (T == NULL) {
+        return -1;
+    }
+    int leftHeight = getHeight(T->Left);
+    int rightHeight = getHeight(T->Right);
+    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+}
+
+// Hàm tính chi?u cao c?a nút có khóa x hnode  
+int hNode(int x, Tree T) {
+    Tree node = searchNode(x, T); // Tìm nút có khóa x trong cây
+    if (node == NULL) {
+        return -1; // N?u không tìm th?y, tr? v? -1
+    } else {
+        return getHeight(node); // Tính chi?u cao c?a nút tìm du?c
+    }
+}
+
+
+
+Tree getParent(int x, Tree T) {
+    if (T == NULL || T->Key == x) {
+        return NULL;
+    }
+
+    Tree parent = NULL;
+    Tree current = T;
+
+    while (current != NULL) {
+        if (x < current->Key) {
+            parent = current;
+            current = current->Left;
+        } else if (x > current->Key) {
+            parent = current;
+            current = current->Right;
+        } else {
+            return parent;
+        }
+    }
+    return NULL;
+}
+
 int main() {
 	
 	return 0;
