@@ -70,6 +70,57 @@ void PosOrder(Tree tree) {
 	}
 }
 
+Tree search(int x, Tree tree) {
+	if (tree == NULL) return NULL;
+	if (tree->Data == x) return tree;
+	if (tree->Data < x) return search(x, tree->left);
+	return search(x, tree->right);
+}
+
+void insertTree(int x, Tree *tree) {
+	if (*tree == NULL) {
+		(*tree) = (Node *)malloc(sizeof(tree));
+		(*tree)->Data = x;
+		(*tree)->left = NULL;
+		(*tree)->right = NULL;
+	}
+	else {
+		if ((*tree)->Data < x) insertTree(x, &(*tree)->right);
+		else insertTree(x, &(*tree)->left);
+	}
+}
+
+int deleteMin(Tree *tree) {
+	int k;
+	if ((*tree)->left == NULL) {
+		k = (*tree)->Data;
+		*tree = (*tree)->right;
+		return k;
+	}
+	return DeleteMin((*tree)->left);
+}
+
+void deleteNode(int x, Tree *root) {
+	if (root != NULL) {
+		if (x < (*root)->Data) deleteNode(x, (*root)->left);
+		else {
+			if (x > (*root)->Data) deleteNode(x, (*root)->right);
+			else {
+				if (((*root)->left == NULL) && ((*root)->right == NULL)) {
+					root = NULL;
+				}
+				else {
+					if ((*root)->left == NULL) root = (*root)->right;
+					else {
+						if ((*root)->right == NULL) root = (*root)->left;
+						else (*root)->Data = deleteMin((*root)->right);
+					}
+				}
+			}
+		}
+	}
+}
+
 int main() {
 	
 	return 0;
